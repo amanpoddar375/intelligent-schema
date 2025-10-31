@@ -1,0 +1,56 @@
+{
+  "reasoner_examples": [
+    {
+      "user_query": "Show claims from active customers in last 30 days",
+      "schema_slice": {
+        "tables": {
+          "public.claims": {
+            "columns": {
+              "claim_id": {},
+              "customer_id": {},
+              "status": {},
+              "created_at": {}
+            }
+          },
+          "public.customers": {
+            "columns": {
+              "customer_id": {},
+              "status": {},
+              "activated_at": {}
+            }
+          }
+        },
+        "foreign_keys": [
+          ["public.claims", "customer_id", "public.customers", "customer_id"]
+        ]
+      },
+      "expected_output": {
+        "query_intent": "Retrieve claims for customers whose status is active within the last 30 days",
+        "relevant_tables": ["public.claims", "public.customers"],
+        "schema_context": {
+          "public.claims": {
+            "columns": ["claim_id", "customer_id", "status", "created_at"]
+          },
+          "public.customers": {
+            "columns": ["customer_id", "status", "activated_at"]
+          }
+        },
+        "foreign_keys_map": [
+          ["public.claims", "customer_id", "public.customers", "customer_id"]
+        ],
+        "performance_hints": ["claims.customer_id indexed"]
+      }
+    }
+  ],
+  "synthesizer_examples": [
+    {
+      "user_query": "Show claims from active customers in last 30 days",
+      "sql": "SELECT ...",
+      "rows": [
+        {"claim_id": 1, "customer_name": "Alice", "status": "active", "created_at": "2024-05-20"}
+      ],
+      "metadata": {"rows_returned": 1, "query_cost": 123, "time_ms": 200},
+      "expected_output": "Returned 1 active customer claim from the last 30 days. Latest claim: Alice (May 20, 2024)."
+    }
+  ]
+}

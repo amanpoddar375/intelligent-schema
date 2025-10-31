@@ -1,0 +1,48 @@
+{
+  "generated_at": "2024-06-01T00:00:00Z",
+  "tables": {
+    "public.customers": {
+      "schema": "public",
+      "name": "customers",
+      "description": "Customer master records",
+      "row_estimate": 1200000,
+      "size_bytes": 123456789,
+      "columns": {
+        "customer_id": {"data_type": "integer", "is_not_null": true},
+        "first_name": {"data_type": "text"},
+        "status": {"data_type": "text"},
+        "activated_at": {"data_type": "timestamp"}
+      }
+    },
+    "public.claims": {
+      "schema": "public",
+      "name": "claims",
+      "description": "Insurance claims filed by customers",
+      "row_estimate": 3400000,
+      "size_bytes": 234567890,
+      "columns": {
+        "claim_id": {"data_type": "bigint", "is_not_null": true},
+        "customer_id": {"data_type": "integer"},
+        "status": {"data_type": "text"},
+        "created_at": {"data_type": "timestamp"}
+      }
+    }
+  },
+  "foreign_keys": [
+    {
+      "constraint": "claims_customer_id_fkey",
+      "definition": "FOREIGN KEY (customer_id) REFERENCES public.customers(customer_id)",
+      "table": "public.claims",
+      "foreign_table": "public.customers"
+    }
+  ],
+  "indexes": {
+    "claims": [
+      {"index": "claims_customer_id_idx", "definition": "CREATE INDEX ON public.claims(customer_id)", "is_unique": false}
+    ]
+  },
+  "table_stats": {
+    "public.customers": {"row_estimate": 1200000, "size_bytes": 123456789},
+    "public.claims": {"row_estimate": 3400000, "size_bytes": 234567890}
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["query_intent", "relevant_tables", "schema_context", "foreign_keys_map", "performance_hints"],
+  "properties": {
+    "query_intent": {"type": "string"},
+    "relevant_tables": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "schema_context": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "columns": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        },
+        "required": ["columns"]
+      }
+    },
+    "foreign_keys_map": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {"type": "string"},
+        "minItems": 4,
+        "maxItems": 4
+      }
+    },
+    "performance_hints": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}
